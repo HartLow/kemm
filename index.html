@@ -9,61 +9,79 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Lilita+One&family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet" />
   <style>
-    /* ── TOKENS ─────────────────────────────── */
+
     :root {
-      --p1: #ffe6f4;
-      --p2: #ffcfe8;
-      --p3: #ff9bd2;
-      --p4: #e8609a;
-      --berry: #7b2054;
-      --ink: #3d1530;
-      --mint: #c8fde5;
-      --glass: rgba(255,255,255,0.72);
-      --glass-border: rgba(255,255,255,0.9);
-      --shadow-soft: 0 30px 70px rgba(120,30,80,0.18);
       --ease-bounce: cubic-bezier(.34,1.56,.64,1);
       --ease-smooth: cubic-bezier(.25,.8,.25,1);
+      
+      --theme-idx-1: rgba(255,140,200,0.75); --theme-idx-2: rgba(200,253,230,0.7); --theme-idx-3: rgba(255,200,232,0.75);
+      --bg-idx: linear-gradient(145deg, #ffedf7 0%, #ffd5eb 50%, #e8fff6 100%);
     }
-
-    /* ── RESET ───────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── BODY / PAGE TRANSITIONS ─────────────── */
     body {
       font-family: "Quicksand", sans-serif;
       min-height: 100vh;
-      color: var(--ink);
+      color: #3d1530;
       background:
-        radial-gradient(ellipse 60% 40% at 8% 5%, rgba(255,140,200,0.75), transparent),
-        radial-gradient(ellipse 55% 45% at 92% 10%, rgba(200,253,230,0.7), transparent),
-        radial-gradient(ellipse 50% 50% at 55% 92%, rgba(255,200,232,0.75), transparent),
-        linear-gradient(145deg, #ffedf7 0%, #ffd5eb 50%, #e8fff6 100%);
+        radial-gradient(ellipse 60% 40% at 8% 5%, var(--theme-idx-1), transparent),
+        radial-gradient(ellipse 55% 45% at 92% 10%, var(--theme-idx-2), transparent),
+        radial-gradient(ellipse 50% 50% at 55% 92%, var(--theme-idx-3), transparent),
+        var(--bg-idx);
       overflow-x: hidden;
       opacity: 0;
       transform: translateY(14px);
-      transition: opacity .55s var(--ease-smooth), transform .55s var(--ease-smooth);
+      transition: opacity .4s var(--ease-smooth), transform .4s var(--ease-smooth), background 0.8s ease;
     }
     body.page-in  { opacity: 1; transform: translateY(0); }
     body.page-out { opacity: 0; transform: translateY(10px); }
 
-    /* ── CURSOR GLOW ─────────────────────────── */
+    /* Theme overrides for pages */
+    body[data-page="khai-niem"] { --theme-idx-1: rgba(255,180,220,.7); --theme-idx-2: rgba(190,250,225,.65); --theme-idx-3: rgba(0,0,0,0); --bg-idx: linear-gradient(155deg, #fcedf5 0%, #ffd6eb 55%, #edfff7 100%); }
+    body[data-page="lien-he"] { --theme-idx-1: rgba(255,160,210,.72); --theme-idx-2: rgba(200,240,255,.65); --theme-idx-3: rgba(0,0,0,0); --bg-idx: linear-gradient(150deg, #fce0f0 0%, #f5b8d2 50%, #e8f4ff 100%); }
+    body[data-page="vi-moi"] { --theme-idx-1: rgba(255,170,215,.75); --theme-idx-2: rgba(180,255,225,.7); --theme-idx-3: rgba(210,190,255,.45); --bg-idx: linear-gradient(145deg, #fceaf5 0%, #f0d4ea 50%, #eafff7 100%); }
+    body[data-page="vi-truyen-thong"] { --theme-idx-1: rgba(255,140,185,.75); --theme-idx-2: rgba(255,220,150,.65); --theme-idx-3: rgba(0,0,0,0); --bg-idx: linear-gradient(150deg, #fcd5e8 0%, #f5a9c6 45%, #ffe8c0 100%); }
+
     #cursor-glow {
       position: fixed; pointer-events: none; z-index: 9999;
-      width: 320px; height: 320px;
+      width: 320px; height: 320px; top: 0; left: 0;
       border-radius: 50%;
       background: radial-gradient(circle, rgba(255,150,210,0.18) 0%, transparent 70%);
-      transform: translate(-50%,-50%);
+      transform: translate(-50%, -50%);
       transition: transform .08s linear;
+      will-change: transform;
       mix-blend-mode: multiply;
     }
 
-    /* ── FLOATING BLOBS ──────────────────────── */
     .blob {
       position: fixed; border-radius: 50%; z-index: -1;
       filter: blur(28px); opacity: .5;
+      will-change: transform;
+      transform: translateZ(0);
     }
+    
+    .page-section { display: none; }
+    .page-section.active { display: block; animation: fadeIn .5s forwards; }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+    /* ── TOKENS ─────────────────────────────── */
+    
+
+    /* ── RESET ───────────────────────────────── */
+    
+
+    /* ── BODY / PAGE TRANSITIONS ─────────────── */
+    
+    
+    
+
+    /* ── CURSOR GLOW ─────────────────────────── */
+    
+
+    /* ── FLOATING BLOBS ──────────────────────── */
+    
     .blob-a { width:320px;height:320px;background:#ffaad6;top:-80px;left:-90px; animation: float-a 14s ease-in-out infinite; }
     .blob-b { width:280px;height:280px;background:#b5fcdf;bottom:-80px;right:-80px; animation: float-b 16s ease-in-out infinite; }
     .blob-c { width:200px;height:200px;background:#c8d4ff;top:40%;left:60%; animation: float-c 18s ease-in-out infinite; opacity:.35; }
@@ -79,6 +97,7 @@
     .dot {
       position: absolute; border-radius: 50%; opacity: 0;
       animation: rain linear infinite;
+      will-change: transform, opacity;
     }
     @keyframes rain {
       0%   { transform: translateY(-20px) rotate(0deg); opacity: .7; }
@@ -349,9 +368,620 @@
       .shell { border-radius: 24px; }
       .bottom-strip { margin: 0 18px 22px; }
     }
+  
+
+    
+    
+
+    
+    
+    
+
+    /* FLOATING BG */
+    
+    .blob-a { width:260px;height:260px;background:#ffaad6;top:-60px;left:-70px; animation:fa 14s ease-in-out infinite; }
+    .blob-b { width:220px;height:220px;background:#b5fcdf;bottom:-60px;right:-60px; animation:fb 17s ease-in-out infinite; }
+     50%{transform:translate(16px,-18px)} }
+     50%{transform:translate(-12px,15px)} }
+
+    /* CURSOR GLOW */
+    
+
+    /* NAV BAR */
+    .topbar {
+      position: sticky; top:0; z-index: 100;
+      backdrop-filter: blur(12px) saturate(1.4);
+      -webkit-backdrop-filter: blur(12px) saturate(1.4);
+      background: rgba(255,240,250,.78);
+      border-bottom: 1px solid rgba(200,100,160,.12);
+      padding: 10px 0;
+    }
+
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(130,50,100,.2);
+      background: rgba(255,255,255,.88);
+      color: #7a2050; font-weight: 700; font-size: .9rem;
+      padding: 8px 18px;
+      text-decoration: none;
+      transition: transform .3s var(--ease-bounce), box-shadow .3s ease, background .2s;
+    }
+    .back-btn:hover {
+      transform: translateX(-4px) scale(1.04);
+      box-shadow: 0 8px 20px rgba(120,38,79,.18);
+      background: #fff;
+      color: #7a2050;
+    }
+
+    .badge-tag {
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ffc4e4, #ffecf8);
+      color: #7a2050; font-weight: 700; font-size: .85rem;
+      border: 1.5px solid rgba(120,40,90,.18);
+      padding: 6px 16px;
+    }
+
+    /* WRAP */
+    .wrap { max-width: 940px; }
+
+    /* HEADING */
+    h1.page-title {
+      font-family: "Baloo 2", cursive;
+      font-size: clamp(44px,9vw,90px);
+      font-weight: 800;
+      line-height: .95;
+      background: linear-gradient(135deg, #962453 0%, #d4549a 45%, #e88cbf 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 4px 18px rgba(140,40,90,.22));
+    }
+
+    /* GLASS CARD */
+    .glass-card {
+      border: 1.5px solid rgba(255,255,255,.88);
+      border-radius: 30px;
+      background: rgba(255,255,255,.72);
+      backdrop-filter: blur(12px) saturate(1.5);
+      -webkit-backdrop-filter: blur(12px) saturate(1.5);
+      box-shadow: 0 20px 50px rgba(108,41,81,.18);
+      overflow: hidden;
+      animation: rise .8s var(--ease-bounce) .1s both;
+    }
+    @keyframes rise {
+      from { opacity:0; transform:translateY(24px) scale(.97); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    /* HERO IMAGE */
+    .hero-img-wrap {
+      position: relative; border-radius: 22px; overflow: hidden;
+      box-shadow: 0 14px 36px rgba(108,40,80,.22);
+      border: 2px solid rgba(255,255,255,.9);
+    }
+    .hero-img-wrap::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 55%, rgba(100,30,60,.2));
+      pointer-events: none;
+    }
+    .hero-img {
+      width: 100%; max-height: 380px; object-fit: cover;
+      transition: transform .6s var(--ease-smooth);
+      display: block;
+    }
+    .hero-img-wrap:hover .hero-img { transform: scale(1.05); }
+
+    /* INFO CARDS */
+    .info-card {
+      border-radius: 20px;
+      border: 1.5px solid rgba(200,100,160,.14);
+      background: linear-gradient(135deg, rgba(255,240,250,.95), rgba(240,255,248,.9));
+      padding: 20px 24px;
+      transition: transform .35s var(--ease-bounce), box-shadow .3s ease;
+      position: relative; overflow: hidden;
+    }
+    .info-card::before {
+      content: '';
+      position: absolute; top:0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent);
+      transition: left .5s ease;
+    }
+    .info-card:hover::before { left: 150%; }
+    .info-card:hover {
+      transform: translateY(-5px) scale(1.01);
+      box-shadow: 0 18px 40px rgba(108,40,80,.2);
+    }
+
+    .info-icon {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: linear-gradient(135deg, #ffc4e4, #ffe8f5);
+      display: grid; place-items: center; font-size: 1.4rem;
+      border: 1.5px solid rgba(139,45,95,.2);
+      box-shadow: 0 4px 12px rgba(139,45,95,.15);
+      flex-shrink: 0;
+      transition: transform .35s var(--ease-bounce);
+    }
+    .info-card:hover .info-icon { transform: rotate(-10deg) scale(1.15); }
+
+    /* HIGHLIGHT TEXT */
+    .highlight {
+      background: linear-gradient(135deg, #ff9bd2, #ffcfe8);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
+    }
+
+    /* SCROLL REVEAL */
+    .reveal {
+      opacity: 0; transform: translateY(22px);
+      transition: opacity .55s ease, transform .55s var(--ease-smooth);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 767px) {
+      .glass-card { border-radius: 20px; }
+    }
+  
+
+    
+    
+
+    
+    
+    
+
+    /* BLOBS */
+    
+    .blob-a { width:280px;height:280px;background:#e89abf;top:-70px;left:-80px; animation:fa 14s ease-in-out infinite; }
+    .blob-b { width:230px;height:230px;background:#a8d8f8;bottom:-60px;right:-60px; animation:fb 17s ease-in-out infinite; }
+     50%{transform:translate(14px,-16px)} }
+     50%{transform:translate(-12px,14px)} }
+
+    /* CURSOR */
+    
+
+    /* NAV */
+    .topbar {
+      position:sticky; top:0; z-index:100;
+      backdrop-filter: blur(12px) saturate(1.4);
+      -webkit-backdrop-filter: blur(12px) saturate(1.4);
+      background: rgba(250,220,240,.78);
+      border-bottom: 1px solid rgba(180,80,130,.13);
+      padding: 10px 0;
+    }
+    .back-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      border-radius:999px; border:1.5px solid rgba(130,50,100,.2);
+      background:rgba(255,255,255,.88);
+      color:#7a2050; font-weight:700; font-size:.9rem;
+      padding:8px 18px; text-decoration:none;
+      transition: transform .3s var(--ease-bounce), box-shadow .3s ease, background .2s;
+    }
+    .back-btn:hover {
+      transform: translateX(-4px) scale(1.04);
+      box-shadow: 0 8px 20px rgba(120,38,79,.18);
+      background:#fff; color:#7a2050;
+    }
+    .badge-tag {
+      border-radius:999px;
+      background: linear-gradient(135deg,#ffc4e4,#ffecf8);
+      color:#7a2050; font-weight:700; font-size:.85rem;
+      border:1.5px solid rgba(120,40,90,.18); padding:6px 16px;
+    }
+
+    /* PAGE TITLE */
+    h1.page-title {
+      font-family: "Baloo 2", cursive;
+      font-size: clamp(42px,9vw,90px);
+      font-weight: 800; line-height:.95;
+      background: linear-gradient(135deg, #8c1a50 0%, #cc4488 45%, #e080b0 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 4px 18px rgba(140,40,90,.2));
+    }
+
+    /* GLASS CARD */
+    .glass-card {
+      border:1.5px solid rgba(255,255,255,.88);
+      border-radius:30px;
+      background:rgba(255,255,255,.72);
+      backdrop-filter:blur(12px) saturate(1.5);
+      -webkit-backdrop-filter:blur(12px) saturate(1.5);
+      box-shadow:0 22px 55px rgba(108,43,84,.2);
+      animation: rise .8s var(--ease-bounce) .1s both;
+    }
+    @keyframes rise {
+      from { opacity:0; transform:translateY(24px) scale(.97); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    /* CONTACT ITEM */
+    .contact-item {
+      display:flex; align-items:flex-start; gap:14px;
+      padding:16px 20px; border-radius:18px;
+      border:1.5px solid rgba(200,100,150,.12);
+      background:linear-gradient(135deg, rgba(255,240,248,.95), rgba(240,255,252,.9));
+      transition: transform .35s var(--ease-bounce), box-shadow .3s ease;
+      position:relative; overflow:hidden;
+    }
+    .contact-item::before {
+      content:'';
+      position:absolute; top:0; left:-100%; width:60%; height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+      transition: left .5s ease;
+    }
+    .contact-item:hover::before { left:150%; }
+    .contact-item:hover {
+      transform: translateX(6px) scale(1.01);
+      box-shadow: 0 14px 32px rgba(108,40,80,.18);
+    }
+
+    .contact-icon {
+      width:48px; height:48px; border-radius:50%;
+      background:linear-gradient(135deg, #ffc4e4, #ffe8f5);
+      display:grid; place-items:center; font-size:1.3rem;
+      border:1.5px solid rgba(139,45,95,.2);
+      box-shadow:0 4px 12px rgba(139,45,95,.15); flex-shrink:0;
+      transition: transform .35s var(--ease-bounce);
+    }
+    .contact-item:hover .contact-icon { transform: rotate(-10deg) scale(1.15); }
+
+    /* SHOP PHOTO */
+    .shop-photo-wrap {
+      position:relative; border-radius:24px; overflow:hidden;
+      border:2px solid rgba(255,255,255,.9);
+      box-shadow:0 20px 50px rgba(108,40,80,.22);
+    }
+    .shop-photo-wrap::after {
+      content:'';
+      position:absolute; inset:0;
+      background:linear-gradient(to bottom, transparent 60%, rgba(100,30,60,.18));
+      pointer-events:none;
+    }
+    .shop-photo {
+      width:100%; max-height:280px; object-fit:cover; display:block;
+      transition: transform .6s var(--ease-smooth);
+    }
+    .shop-photo-wrap:hover .shop-photo { transform: scale(1.05); }
+
+    /* OPEN BADGE */
+    .open-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      background:linear-gradient(135deg, #ff6dba, #ff9ecf);
+      color:#fff; font-weight:800; font-size:.9rem;
+      border-radius:999px; padding:8px 18px;
+      box-shadow:0 6px 20px rgba(232,96,154,.38);
+      animation: badge-pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes badge-pulse {
+      0%,100%{box-shadow:0 6px 20px rgba(232,96,154,.38)}
+      50%{box-shadow:0 8px 30px rgba(232,96,154,.62)}
+    }
+    .open-badge .dot {
+      width:9px;height:9px;border-radius:50%;
+      background:#fff;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+    /* REVEAL */
+    .reveal {
+      opacity:0; transform:translateY(22px);
+      transition: opacity .55s ease, transform .55s var(--ease-smooth);
+    }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    @media (max-width:767px){ .glass-card{ border-radius:20px; } }
+  
+
+    
+    
+
+    
+    
+    
+
+    /* BLOBS */
+    
+    .blob-a { width:280px;height:280px;background:#ffaad6;top:-70px;left:-80px; animation:fa 14s ease-in-out infinite; }
+    .blob-b { width:230px;height:230px;background:#b5fcdf;bottom:-60px;right:-60px; animation:fb 17s ease-in-out infinite; }
+    .blob-c { width:180px;height:180px;background:#c4b8ff;top:42%;left:58%; animation:fc 19s ease-in-out infinite; opacity:.35; }
+     50%{transform:translate(16px,-18px)} }
+     50%{transform:translate(-12px,15px)} }
+     50%{transform:translate(-24px,20px)} }
+
+    /* CURSOR */
+    
+
+    /* NAV */
+    .topbar {
+      position:sticky; top:0; z-index:100;
+      backdrop-filter:blur(12px) saturate(1.4);
+      -webkit-backdrop-filter:blur(12px) saturate(1.4);
+      background:rgba(245,225,245,.78);
+      border-bottom:1px solid rgba(180,80,150,.13);
+      padding:10px 0;
+    }
+    .back-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      border-radius:999px; border:1.5px solid rgba(130,50,100,.2);
+      background:rgba(255,255,255,.88); color:#7a2050;
+      font-weight:700; font-size:.9rem; padding:8px 18px; text-decoration:none;
+      transition: transform .3s var(--ease-bounce), box-shadow .3s ease, background .2s;
+    }
+    .back-btn:hover {
+      transform:translateX(-4px) scale(1.04);
+      box-shadow:0 8px 20px rgba(120,38,79,.18);
+      background:#fff; color:#7a2050;
+    }
+    .badge-tag {
+      border-radius:999px;
+      background:linear-gradient(135deg, #c8b4ff, #f0e8ff);
+      color:#5a2088; font-weight:700; font-size:.85rem;
+      border:1.5px solid rgba(100,40,160,.18); padding:6px 16px;
+    }
+
+    /* TITLE */
+    h1.page-title {
+      font-family: "Pacifico", cursive;
+      font-size: clamp(44px,9vw,86px);
+      background: linear-gradient(135deg, #7a22b4 0%, #c450a2 40%, #e87aaa 70%, #ff9ecf 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+      filter:drop-shadow(0 4px 18px rgba(120,40,160,.2));
+      animation: title-in .8s var(--ease-bounce) .1s both;
+    }
+    @keyframes title-in {
+      from{opacity:0;transform:translateY(20px) scale(.94)}
+      to{opacity:1;transform:translateY(0) scale(1)}
+    }
+
+    /* FEATURE CARD */
+    .feature-card {
+      border-radius:28px;
+      border:1.5px solid rgba(255,255,255,.88);
+      background:rgba(255,255,255,.72);
+      backdrop-filter:blur(12px) saturate(1.5);
+      -webkit-backdrop-filter:blur(12px) saturate(1.5);
+      box-shadow:0 22px 55px rgba(100,40,80,.18);
+      overflow:hidden;
+      animation: rise .8s var(--ease-bounce) .1s both;
+    }
+    @keyframes rise {
+      from{opacity:0;transform:translateY(24px) scale(.97)}
+      to{opacity:1;transform:translateY(0) scale(1)}
+    }
+
+    /* FEATURED IMAGE */
+    .feat-img-wrap {
+      position:relative; border-radius:22px; overflow:hidden;
+      border:2px solid rgba(255,255,255,.9);
+      box-shadow:0 14px 36px rgba(100,38,78,.22);
+    }
+    .feat-img-wrap::after {
+      content:'';
+      position:absolute; inset:0;
+      background:linear-gradient(to bottom, transparent 55%, rgba(80,28,60,.2));
+      pointer-events:none;
+    }
+    .feat-img {
+      width:100%; max-height:320px; object-fit:cover; display:block;
+      transition:transform .6s var(--ease-smooth);
+    }
+    .feat-img-wrap:hover .feat-img { transform:scale(1.05); }
+
+    /* FLAVOR PILLS */
+    .flavor-pill {
+      display:flex; align-items:center; gap:12px;
+      padding:14px 18px; border-radius:999px;
+      border:1.5px solid rgba(160,80,200,.15);
+      background:linear-gradient(135deg, rgba(255,255,255,.95), rgba(248,240,255,.9));
+      font-weight:700; font-size:.95rem;
+      cursor:default;
+      position:relative; overflow:hidden;
+      transition:
+        transform .35s var(--ease-bounce),
+        box-shadow .3s ease,
+        border-color .25s ease;
+    }
+    .flavor-pill::before {
+      content:'';
+      position:absolute; top:0; left:-100%; width:60%; height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.6), transparent);
+      transition:left .5s ease;
+    }
+    .flavor-pill:hover::before { left:150%; }
+    .flavor-pill:hover {
+      transform:translateX(8px) scale(1.02);
+      box-shadow:0 12px 28px rgba(120,50,180,.2);
+      border-color:rgba(180,80,220,.3);
+    }
+    .flavor-pill .pill-icon {
+      width:38px; height:38px; border-radius:50%;
+      background:linear-gradient(135deg, #e0c4ff, #f5e8ff);
+      display:grid; place-items:center; font-size:1.1rem; flex-shrink:0;
+      border:1.5px solid rgba(140,60,200,.2);
+      transition:transform .35s var(--ease-bounce);
+    }
+    .flavor-pill:hover .pill-icon { transform:rotate(-10deg) scale(1.15); }
+
+    /* NEW BADGE */
+    .new-badge {
+      display:inline-block;
+      background:linear-gradient(135deg,#ff6dba,#a855f7);
+      color:#fff; font-weight:800; font-size:.72rem;
+      border-radius:999px; padding:2px 10px;
+      margin-left:auto;
+      animation:badge-shine 3s ease-in-out infinite;
+    }
+    @keyframes badge-shine {
+      0%,100%{opacity:1} 50%{opacity:.7}
+    }
+
+    /* REVEAL */
+    .reveal {
+      opacity:0; transform:translateY(22px);
+      transition: opacity .55s ease, transform .55s var(--ease-smooth);
+    }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    @media(max-width:767px){ .feature-card{ border-radius:20px; } }
+  
+
+    
+    
+
+    
+    
+    
+
+    /* BLOBS */
+    
+    .blob-a { width:280px;height:280px;background:#e88fb8;top:-70px;left:-80px; animation:fa 13s ease-in-out infinite; }
+    .blob-b { width:240px;height:240px;background:#ffd688;bottom:-60px;right:-60px; animation:fb 16s ease-in-out infinite; }
+     50%{transform:translate(14px,-16px)} }
+     50%{transform:translate(-12px,14px)} }
+
+    /* CURSOR */
+    
+
+    /* NAV */
+    .topbar {
+      position:sticky; top:0; z-index:100;
+      backdrop-filter:blur(12px) saturate(1.4);
+      -webkit-backdrop-filter:blur(12px) saturate(1.4);
+      background:rgba(250,210,230,.78);
+      border-bottom:1px solid rgba(180,70,120,.13);
+      padding:10px 0;
+    }
+    .back-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      border-radius:999px; border:1.5px solid rgba(130,50,100,.2);
+      background:rgba(255,255,255,.88); color:#7a2050;
+      font-weight:700; font-size:.9rem; padding:8px 18px; text-decoration:none;
+      transition: transform .3s var(--ease-bounce), box-shadow .3s ease, background .2s;
+    }
+    .back-btn:hover {
+      transform:translateX(-4px) scale(1.04);
+      box-shadow:0 8px 20px rgba(120,38,79,.18);
+      background:#fff; color:#7a2050;
+    }
+    .badge-tag {
+      border-radius:999px;
+      background:linear-gradient(135deg, #ffcba0, #fff0e0);
+      color:#8a4010; font-weight:700; font-size:.85rem;
+      border:1.5px solid rgba(160,80,20,.18); padding:6px 16px;
+    }
+
+    /* TITLE */
+    h1.page-title {
+      font-family: "Baloo 2", cursive;
+      font-size:clamp(40px,9vw,90px);
+      font-weight:800; line-height:.95;
+      background: linear-gradient(135deg, #8c1840 0%, #cc4070 40%, #e88090 70%, #ff9faa 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+      filter:drop-shadow(0 4px 18px rgba(140,40,80,.2));
+      animation: title-in .8s var(--ease-bounce) .1s both;
+    }
+    @keyframes title-in {
+      from{opacity:0;transform:translateY(20px) scale(.94)}
+      to{opacity:1;transform:translateY(0) scale(1)}
+    }
+
+    /* FLAVOR CARD */
+    .flavor-card {
+      border-radius:26px; overflow:hidden;
+      border:2px solid rgba(255,255,255,.9);
+      box-shadow:0 18px 45px rgba(65,22,49,.2);
+      background:#ffeaf5;
+      transition:
+        transform .4s var(--ease-bounce),
+        box-shadow .35s ease;
+      cursor:pointer;
+      position:relative;
+    }
+    .flavor-card::before {
+      content:'';
+      position:absolute; inset:0; z-index:1;
+      background:linear-gradient(to bottom, transparent 50%, rgba(80,20,50,.35));
+      pointer-events:none;
+      opacity:0;
+      transition:opacity .35s ease;
+    }
+    .flavor-card:hover::before { opacity:1; }
+    .flavor-card:hover {
+      transform:translateY(-10px) scale(1.025);
+      box-shadow:0 28px 60px rgba(65,22,49,.28), 0 0 0 3px rgba(255,140,180,.25);
+    }
+
+    /* CARD IMAGE */
+    .flavor-card .card-img {
+      width:100%; height:230px; object-fit:cover;
+      transition:transform .6s var(--ease-smooth);
+      display:block;
+    }
+    .flavor-card:hover .card-img { transform:scale(1.08); }
+
+    /* CARD BODY */
+    .card-body-inner {
+      padding:18px 20px 20px;
+      position:relative; z-index:2;
+    }
+
+    /* CARD ICON */
+    .card-flavor-icon {
+      position:absolute; top:-22px; right:18px; z-index:3;
+      width:44px; height:44px; border-radius:50%;
+      background:linear-gradient(135deg, var(--c1), var(--c2));
+      display:grid; place-items:center; font-size:1.3rem;
+      border:2px solid rgba(255,255,255,.9);
+      box-shadow:0 6px 18px rgba(100,30,60,.22);
+      transition:transform .35s var(--ease-bounce);
+    }
+    .flavor-card:hover .card-flavor-icon { transform:rotate(-15deg) scale(1.18); }
+
+    /* TASTE TAG */
+    .taste-tag {
+      display:inline-block;
+      border-radius:999px; font-size:.78rem; font-weight:700;
+      padding:3px 12px; margin-top:6px;
+      border:1px solid currentColor; opacity:.8;
+    }
+
+    /* SEPARATOR */
+    .section-divider {
+      text-align:center; margin:40px 0 28px;
+      position:relative;
+    }
+    .section-divider::before {
+      content:'';
+      position:absolute; top:50%; left:0; right:0; height:1px;
+      background:linear-gradient(90deg, transparent, rgba(180,60,100,.3), transparent);
+    }
+    .section-divider span {
+      position:relative; background:transparent;
+      padding:0 18px;
+      font-family:"Baloo 2",cursive; font-weight:700;
+      font-size:1.1rem; color:#8c2a60;
+    }
+
+    /* REVEAL */
+    .reveal {
+      opacity:0; transform:translateY(22px);
+      transition: opacity .55s ease, transform .55s var(--ease-smooth);
+    }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    @media(max-width:767px){
+      .flavor-card { border-radius:20px; }
+    }
+  
   </style>
 </head>
-<body>
+<body data-page="home">
   <!-- Cursor glow -->
   <div id="cursor-glow"></div>
 
@@ -359,6 +989,19 @@
   <div class="blob blob-a"></div>
   <div class="blob blob-b"></div>
   <div class="blob blob-c"></div>
+
+  <!-- Confetti -->
+  <div class="confetti-wrap" id="confetti"></div>
+
+  <!-- PAGES -->
+  <div id="page-home" class="page-section active">
+    <!-- Cursor glow -->
+  
+
+  <!-- Blobs -->
+  
+  
+  
 
   <!-- Confetti -->
   <div class="confetti-wrap" id="confetti"></div>
@@ -392,7 +1035,7 @@
         <div class="row g-3">
 
           <div class="col-12 col-md-6">
-            <a class="menu-card" id="btn-khainem" href="khai-niem.html">
+            <a class="menu-card" id="btn-khainem" href="#" onclick="navTo('khai-niem'); return false;">
               <div class="d-flex align-items-center gap-3 flex-grow-1">
                 <span class="icon-wrap"><i class="bi bi-bookmark-heart-fill"></i></span>
                 <div>
@@ -405,7 +1048,7 @@
           </div>
 
           <div class="col-12 col-md-6">
-            <a class="menu-card" id="btn-truyen" href="vi-truyen-thong.html">
+            <a class="menu-card" id="btn-truyen" href="#" onclick="navTo('vi-truyen-thong'); return false;">
               <div class="d-flex align-items-center gap-3 flex-grow-1">
                 <span class="icon-wrap"><i class="bi bi-cup-hot-fill"></i></span>
                 <div>
@@ -418,7 +1061,7 @@
           </div>
 
           <div class="col-12 col-md-6">
-            <a class="menu-card" id="btn-moi" href="vi-moi.html">
+            <a class="menu-card" id="btn-moi" href="#" onclick="navTo('vi-moi'); return false;">
               <div class="d-flex align-items-center gap-3 flex-grow-1">
                 <span class="icon-wrap"><i class="bi bi-stars"></i></span>
                 <div>
@@ -431,7 +1074,7 @@
           </div>
 
           <div class="col-12 col-md-6">
-            <a class="menu-card" id="btn-lienhe" href="lien-he.html">
+            <a class="menu-card" id="btn-lienhe" href="#" onclick="navTo('lien-he'); return false;">
               <div class="d-flex align-items-center gap-3 flex-grow-1">
                 <span class="icon-wrap"><i class="bi bi-telephone-fill"></i></span>
                 <div>
@@ -454,37 +1097,378 @@
 
     </div>
   </div>
+  </div>
+
+  <div id="page-khai-niem" class="page-section">
+    <!-- TOP NAV -->
+  <nav class="topbar">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a href="#" onclick="navTo('home'); return false;" class="back-btn" id="backBtn">
+        <i class="bi bi-arrow-left"></i> Trang chủ
+      </a>
+      <span class="badge-tag"><i class="bi bi-book-half me-1"></i>Khái niệm</span>
+    </div>
+  </nav>
+
+  <div class="container py-4 py-md-5" style="position:relative;z-index:1;">
+    <div class="wrap mx-auto">
+
+      <!-- TITLE -->
+      <div class="reveal mb-4">
+        <h1 class="page-title">Kem là gì? <i class="bi bi-snow" style="font-size:.8em;"></i></h1>
+      </div>
+
+      <!-- MAIN CARD -->
+      <div class="glass-card p-3 p-md-4 mb-4 reveal">
+        <!-- Image -->
+        <div class="hero-img-wrap mb-4">
+          <img class="hero-img"
+            src="https://images.unsplash.com/photo-1488900128323-21503983a07e?auto=format&fit=crop&w=1400&q=80"
+            alt="Viên kem trong ốc quế tươi mát" />
+        </div>
+
+        <!-- Intro text -->
+        <p class="fw-bold fs-5 mb-3" style="color:#6a2048;">
+          Kem là món tráng miệng đông lạnh có vị ngọt, làm từ sữa hoặc kem tươi kết hợp cùng đường và hương liệu tự nhiên.
+        </p>
+        <p class="fs-5 mb-3">
+          Từ nguyên liệu cơ bản, kem có thể biến tấu thành <span class="highlight">hàng trăm hương vị</span>: trái cây, socola, vani, trà xanh, phô mai… Chính độ mịn, lạnh và thơm khiến kem trở thành món ăn được yêu thích từ trẻ em đến người lớn trên toàn thế giới.
+        </p>
+        <p class="fs-5 mb-0">
+          Tại <strong>Sweety Ice</strong>, mỗi mẻ kem được làm mới hàng ngày để giữ độ mềm mượt và hương vị tươi nhất cho bạn.
+        </p>
+      </div>
+
+      <!-- INFO CARDS -->
+      <div class="row g-3 reveal">
+        <div class="col-12 col-md-4">
+          <div class="info-card h-100">
+            <div class="d-flex align-items-center gap-3 mb-2">
+              <div class="info-icon"><i class="bi bi-droplet-half"></i></div>
+              <strong class="fs-5">Thành phần</strong>
+            </div>
+            <p class="mb-0">Sữa tươi, kem béo, đường, lòng đỏ trứng và hương liệu tự nhiên chọn lọc.</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="info-card h-100">
+            <div class="d-flex align-items-center gap-3 mb-2">
+              <div class="info-icon"><i class="bi bi-journal-text"></i></div>
+              <strong class="fs-5">Lịch sử</strong>
+            </div>
+            <p class="mb-0">Kem xuất hiện từ thế kỷ 17 ở châu Âu và nhanh chóng chinh phục khẩu vị toàn cầu.</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="info-card h-100">
+            <div class="d-flex align-items-center gap-3 mb-2">
+              <div class="info-icon"><i class="bi bi-snow3"></i></div>
+              <strong class="fs-5">Quy trình</strong>
+            </div>
+            <p class="mb-0">Hỗn hợp được khuấy liên tục trong quá trình đông lạnh để tạo kết cấu mịn màng hoàn hảo.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </div>
+
+  <div id="page-vi-truyen-thong" class="page-section">
+    <nav class="topbar">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a href="#" onclick="navTo('home'); return false;" class="back-btn"><i class="bi bi-arrow-left"></i> Trang chủ</a>
+      <span class="badge-tag"><i class="bi bi-cup-hot-fill me-1"></i>Truyền thống</span>
+    </div>
+  </nav>
+
+  <div class="container py-4 py-md-5" style="position:relative;z-index:1;">
+
+    <!-- TITLE -->
+    <div class="reveal text-center mb-5">
+      <h1 class="page-title">Vị kem truyền thống <i class="bi bi-snow" style="font-size:.8em;"></i></h1>
+      <p class="mt-3 fw-bold fs-5" style="color:#7a2040;">Quen thuộc, đậm đà – những hương vị không bao giờ lỗi thời</p>
+    </div>
+
+    <!-- CARDS -->
+    <div class="row g-4">
+
+      <!-- SOCOLA -->
+      <div class="col-12 col-md-6 col-lg-3 reveal">
+        <div class="flavor-card" style="--c1:#8B4513;--c2:#D2691E;">
+          <img class="card-img"
+            src="https://www.huongnghiepaau.com/wp-content/uploads/2019/01/hinh-anh-kem-socola.jpg"
+            alt="Kem socola đậm đà" />
+          <div class="card-body-inner">
+            <div class="card-flavor-icon" style="--c1:#8B4513;--c2:#D2691E;"><i class="bi bi-gem"></i></div>
+            <h3 class="fw-bold mb-1" style="font-family:'Baloo 2',cursive;">Kem socola</h3>
+            <p class="mb-1" style="color:#5c2a1a;">Đậm vị cacao, thơm béo và ngọt vừa phải.</p>
+            <span class="taste-tag" style="color:#8B4513; border-color:#8B4513;">Đậm đà</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- VANI -->
+      <div class="col-12 col-md-6 col-lg-3 reveal">
+        <div class="flavor-card" style="--c1:#D4A017;--c2:#F5D36E;">
+          <img class="card-img"
+            src="https://images.unsplash.com/photo-1560008581-09826d1de69e?auto=format&fit=crop&w=900&q=80"
+            alt="Kem vani mềm mịn" />
+          <div class="card-body-inner">
+            <div class="card-flavor-icon" style="--c1:#D4A017;--c2:#F5D36E;"><i class="bi bi-flower2"></i></div>
+            <h3 class="fw-bold mb-1" style="font-family:'Baloo 2',cursive;">Kem vani</h3>
+            <p class="mb-1" style="color:#5a4010;">Mùi vani dịu nhẹ, mềm mịn dễ ăn, tan chảy tuyệt vời.</p>
+            <span class="taste-tag" style="color:#b07a00; border-color:#b07a00;">Dịu ngọt</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAU -->
+      <div class="col-12 col-md-6 col-lg-3 reveal">
+        <div class="flavor-card" style="--c1:#e0335a;--c2:#ff7798;">
+          <img class="card-img"
+            src="https://file.hstatic.net/200000079049/file/cach-lam-kem-dau-1_b11e21c58b1a408a87afa544091adcaf.jpg"
+            alt="Kem dâu màu hồng xinh" />
+          <div class="card-body-inner">
+            <div class="card-flavor-icon" style="--c1:#e0335a;--c2:#ff7798;"><i class="bi bi-heart-fill"></i></div>
+            <h3 class="fw-bold mb-1" style="font-family:'Baloo 2',cursive;">Kem dâu</h3>
+            <p class="mb-1" style="color:#5a1030;">Vị dâu chua ngọt, màu hồng siêu xinh, đầy cảm hứng.</p>
+            <span class="taste-tag" style="color:#c0204a; border-color:#c0204a;">Chua ngọt</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DUA -->
+      <div class="col-12 col-md-6 col-lg-3 reveal">
+        <div class="flavor-card" style="--c1:#2e8b55;--c2:#72d996;">
+          <img class="card-img"
+            src="https://cdn.tgdd.vn/Files/2020/03/25/1244397/cach-lam-kem-dua-thom-ngon-tai-nha-bang-may-xay-sinh-to-202003250909366047.jpg"
+            alt="Kem dừa thơm mát" />
+          <div class="card-body-inner">
+            <div class="card-flavor-icon" style="--c1:#2e8b55;--c2:#72d996;"><i class="bi bi-tree-fill"></i></div>
+            <h3 class="fw-bold mb-1" style="font-family:'Baloo 2',cursive;">Kem dừa</h3>
+            <p class="mb-1" style="color:#1a4a2e;">Béo thơm, mát lạnh, hương dừa tự nhiên rất thanh.</p>
+            <span class="taste-tag" style="color:#2e8b55; border-color:#2e8b55;">Thơm mát</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DIVIDER -->
+    <div class="section-divider reveal">
+      <span><i class="bi bi-patch-check-fill me-1"></i> Chất lượng đảm bảo mỗi ngày <i class="bi bi-patch-check-fill ms-1"></i></span>
+    </div>
+
+    <!-- BOTTOM INFO -->
+    <div class="row g-3 reveal">
+      <div class="col-12 col-md-4">
+        <div class="p-3 rounded-4 text-center" style="background:rgba(255,255,255,.65); border:1.5px solid rgba(255,255,255,.88); backdrop-filter:blur(8px);">
+          <div class="bi bi-droplet-half" style="font-size:2rem;color:#cc508a;"></div>
+          <div class="fw-bold mt-2">Sữa tươi mỗi ngày</div>
+          <div class="small" style="color:#7a3040;">Nguyên liệu tươi chọn lọc kỹ càng</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="p-3 rounded-4 text-center" style="background:rgba(255,255,255,.65); border:1.5px solid rgba(255,255,255,.88); backdrop-filter:blur(8px);">
+          <div class="bi bi-snow3" style="font-size:2rem;color:#5090d0;"></div>
+          <div class="fw-bold mt-2">Công thức bí truyền</div>
+          <div class="small" style="color:#7a3040;">Quy trình đông lạnh chuẩn tạo độ mịn</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="p-3 rounded-4 text-center" style="background:rgba(255,255,255,.65); border:1.5px solid rgba(255,255,255,.88); backdrop-filter:blur(8px);">
+          <div class="bi bi-heart-fill" style="font-size:2rem;color:#e05080;"></div>
+          <div class="fw-bold mt-2">Làm với tình yêu</div>
+          <div class="small" style="color:#7a3040;">Mỗi mẻ kem được chuẩn bị cẩn thận</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  </div>
+
+  <div id="page-vi-moi" class="page-section">
+    <nav class="topbar">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a href="#" onclick="navTo('home'); return false;" class="back-btn"><i class="bi bi-arrow-left"></i> Trang chủ</a>
+      <span class="badge-tag"><i class="bi bi-stars me-1"></i>Vị mới</span>
+    </div>
+  </nav>
+
+  <div class="container py-4 py-md-5" style="position:relative;z-index:1;">
+
+    <!-- TITLE -->
+    <div class="reveal text-center mb-4">
+      <h1 class="page-title">Vị kem mới <i class="bi bi-stars" style="font-size:.8em;"></i></h1>
+      <p class="mt-3 fw-bold fs-5" style="color:#7a3080;">Những hương vị sáng tạo chỉ có tại Sweety Ice</p>
+    </div>
+
+    <!-- FEATURE CARD -->
+    <div class="feature-card p-3 p-md-4 reveal">
+      <div class="row g-4 align-items-center">
+
+        <!-- IMAGE -->
+        <div class="col-12 col-md-6">
+          <div class="feat-img-wrap">
+            <img class="feat-img"
+              src="https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&w=1200&q=80"
+              alt="Tủ kem với nhiều hương vị sáng tạo" />
+          </div>
+        </div>
+
+        <!-- FLAVORS -->
+        <div class="col-12 col-md-6">
+          <p class="fw-bold fs-5 mb-4" style="color:#802060;">
+            Những món mới tại Sweety Ice – vị lạ mà vẫn dễ ăn, cực kỳ instagram-worthy! <i class="bi bi-palette-fill" style="color:#c060d0;"></i>
+          </p>
+          <div class="d-flex flex-column gap-2">
+
+            <div class="flavor-pill">
+              <div class="pill-icon"><i class="bi bi-leaf-fill"></i></div>
+              <span>Kem matcha phô mai</span>
+              <span class="new-badge">HOT</span>
+            </div>
+
+            <div class="flavor-pill">
+              <div class="pill-icon"><i class="bi bi-gem"></i></div>
+              <span>Kem sữa chua việt quất</span>
+              <span class="new-badge">NEW</span>
+            </div>
+
+            <div class="flavor-pill">
+              <div class="pill-icon"><i class="bi bi-moon-stars-fill"></i></div>
+              <span>Kem than tre dừa non</span>
+              <span class="new-badge">HOT</span>
+            </div>
+
+            <div class="flavor-pill">
+              <div class="pill-icon"><i class="bi bi-brightness-high-fill"></i></div>
+              <span>Kem xoài chanh dây</span>
+              <span class="new-badge">NEW</span>
+            </div>
+
+            <div class="flavor-pill">
+              <div class="pill-icon"><i class="bi bi-cup-straw"></i></div>
+              <span>Combo kem kèm đồ uống</span>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  </div>
+
+  <div id="page-lien-he" class="page-section">
+    <nav class="topbar">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a href="#" onclick="navTo('home'); return false;" class="back-btn"><i class="bi bi-arrow-left"></i> Trang chủ</a>
+      <span class="badge-tag"><i class="bi bi-geo-alt-fill me-1"></i>Liên hệ</span>
+    </div>
+  </nav>
+
+  <div class="container py-4 py-md-5" style="position:relative;z-index:1;">
+
+    <!-- TITLE -->
+    <div class="reveal text-center mb-5">
+      <h1 class="page-title">Liên hệ chúng mình <i class="bi bi-envelope-heart-fill" style="font-size:.8em;"></i></h1>
+      <div class="mt-3">
+        <span class="open-badge"><span class="dot"></span>Đang mở cửa</span>
+      </div>
+    </div>
+
+    <div class="glass-card p-3 p-md-4 mx-auto reveal" style="max-width:900px;">
+      <div class="row g-4 align-items-center">
+
+        <!-- CONTACT INFO -->
+        <div class="col-12 col-md-6">
+          <div class="d-grid gap-3">
+
+            <div class="contact-item">
+              <div class="contact-icon"><i class="bi bi-geo-alt-fill"></i></div>
+              <div>
+                <div class="fw-bold mb-1">Địa chỉ</div>
+                <div>Thôn 1, xã La Tơi, Tỉnh Quảng Ngãi</div>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon"><i class="bi bi-telephone-fill"></i></div>
+              <div>
+                <div class="fw-bold mb-1">Điện thoại</div>
+                <div>038*****77</div>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon"><i class="bi bi-clock-fill"></i></div>
+              <div>
+                <div class="fw-bold mb-1">Giờ mở cửa</div>
+                <div>08:00 – 22:00 mỗi ngày</div>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon"><i class="bi bi-envelope-heart-fill"></i></div>
+              <div>
+                <div class="fw-bold mb-1">Email</div>
+                <div>sweetyice@example.com</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- PHOTO -->
+        <div class="col-12 col-md-6">
+          <div class="shop-photo-wrap">
+            <img class="shop-photo"
+              src="https://images.unsplash.com/photo-1551024709-8f23befc6cf7?auto=format&fit=crop&w=1200&q=80"
+              alt="Không gian quán kem Sweety Ice" />
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  </div>
 
   <script>
-    /* ── PAGE IN ──────────────────────────────── */
     requestAnimationFrame(() => { document.body.classList.add('page-in'); });
 
-    /* ── CURSOR GLOW ──────────────────────────── */
     const glow = document.getElementById('cursor-glow');
     document.addEventListener('mousemove', e => {
-      glow.style.left = e.clientX + 'px';
-      glow.style.top  = e.clientY + 'px';
-    });
+      glow.style.transform = `translate(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%))`;
+    }, { passive: true });
 
-    /* ── CONFETTI PARTICLES ───────────────────── */
+    // Confetti
     const wrap = document.getElementById('confetti');
-    const colors = ['#ff9bd2','#ffcfe8','#b5fcdf','#ffc867','#c8d4ff','#ffe680'];
-    for (let i = 0; i < 28; i++) {
-      const d = document.createElement('div');
-      const size = 5 + Math.random() * 8;
-      d.className = 'dot';
-      Object.assign(d.style, {
-        width: size+'px', height: size+'px',
-        background: colors[Math.floor(Math.random()*colors.length)],
-        left: (Math.random()*100)+'%',
-        top: (Math.random()*100)+'%',
-        animationDuration: (8 + Math.random()*12)+'s',
-        animationDelay: (Math.random()*12)+'s',
-      });
-      wrap.appendChild(d);
+    if (wrap) {
+      const colors = ['#ff9bd2','#ffcfe8','#b5fcdf','#ffc867','#c8d4ff','#ffe680'];
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < 28; i++) {
+        const d = document.createElement('div');
+        const size = 5 + Math.random() * 8;
+        d.className = 'dot';
+        Object.assign(d.style, {
+          width: size+'px', height: size+'px',
+          background: colors[Math.floor(Math.random()*colors.length)],
+          left: (Math.random()*100)+'%',
+          top: (Math.random()*100)+'%',
+          animationDuration: (8 + Math.random()*12)+'s',
+          animationDelay: (Math.random()*12)+'s',
+        });
+        frag.appendChild(d);
+      }
+      wrap.appendChild(frag);
     }
 
-    /* ── RIPPLE ON CARDS ──────────────────────── */
+    // Ripple
     document.querySelectorAll('.menu-card').forEach(card => {
       card.addEventListener('click', function (e) {
         const r = document.createElement('span');
@@ -501,24 +1485,63 @@
       });
     });
 
-    /* ── PAGE TRANSITION ──────────────────────── */
-    document.querySelectorAll('a[href]').forEach(link => {
-      const href = link.getAttribute('href');
-      if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
-      link.addEventListener('click', e => {
-        if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
-        e.preventDefault();
-        document.body.classList.remove('page-in');
-        document.body.classList.add('page-out');
-        setTimeout(() => { window.location.href = href; }, 320);
-      });
-    });
+    // Navigation
+    function navTo(pageId) {
+      window.scrollTo(0, 0);
+      document.body.classList.remove('page-in');
+      document.body.classList.add('page-out');
+      
+      setTimeout(() => {
+        document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+        document.getElementById('page-' + pageId).classList.add('active');
+        document.body.setAttribute('data-page', pageId);
+        
+        // Hide confetti on subpages
+        if (pageId === 'home') {
+          if (document.getElementById('confetti')) document.getElementById('confetti').style.display = 'block';
+        } else {
+          if (document.getElementById('confetti')) document.getElementById('confetti').style.display = 'none';
+        }
 
-    /* ── HERO IMAGE FALLBACK ──────────────────── */
+        // Re-trigger reveal animations
+        document.querySelectorAll('#page-' + pageId + ' .reveal').forEach(el => el.classList.remove('visible'));
+        observeReveals();
+
+        document.body.classList.remove('page-out');
+        document.body.classList.add('page-in');
+      }, 320);
+    }
+
+    // Reveal Logic
+    let currentObserver = null;
+    function observeReveals() {
+      if (currentObserver) currentObserver.disconnect();
+      currentObserver = new IntersectionObserver(entries => {
+        entries.forEach(en => { 
+          if(en.isIntersecting){ 
+            en.target.classList.add('visible'); 
+            currentObserver.unobserve(en.target); 
+          } 
+        });
+      }, { threshold: 0.1 });
+      
+      const activeReveals = document.querySelectorAll('.page-section.active .reveal');
+      activeReveals.forEach((el,i) => {
+        el.style.transitionDelay = (i*0.08)+'s';
+        currentObserver.observe(el);
+      });
+    }
+    
+    // Initial observations
+    observeReveals();
+    
+    // Fallback Image
     const heroImage = document.getElementById('heroImage');
-    heroImage.addEventListener('error', () => {
-      heroImage.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%23ffd2ea'/><stop offset='100%25' stop-color='%23cffff0'/></linearGradient></defs><rect width='1200' height='800' fill='url(%23g)'/><text x='600' y='400' text-anchor='middle' font-size='96' font-family='Verdana' fill='%2370264f'>Sweety Ice</text></svg>`;
-    }, { once: true });
+    if (heroImage) {
+      heroImage.addEventListener('error', () => {
+        heroImage.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%23ffd2ea'/><stop offset='100%25' stop-color='%23cffff0'/></linearGradient></defs><rect width='1200' height='800' fill='url(%23g)'/><text x='600' y='400' text-anchor='middle' font-size='96' font-family='Verdana' fill='%2370264f'>Sweety Ice</text></svg>`;
+      }, { once: true });
+    }
   </script>
 </body>
 </html>
