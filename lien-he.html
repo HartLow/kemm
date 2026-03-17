@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Liên Hệ – Sweety Ice</title>
+  <meta name="description" content="Địa chỉ, số điện thoại và giờ mở cửa của Sweety Ice House tại Quảng Ngãi." />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Quicksand:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ease-bounce: cubic-bezier(.34,1.56,.64,1);
+      --ease-smooth: cubic-bezier(.25,.8,.25,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+
+    body {
+      font-family: "Quicksand", sans-serif;
+      min-height: 100vh;
+      color: #3f1f32;
+      background:
+        radial-gradient(ellipse 60% 45% at 5% 10%, rgba(255,160,210,.72), transparent),
+        radial-gradient(ellipse 50% 50% at 95% 88%, rgba(200,240,255,.65), transparent),
+        linear-gradient(150deg, #fce0f0 0%, #f5b8d2 50%, #e8f4ff 100%);
+      overflow-x: hidden;
+      opacity: 0; transform: translateY(14px);
+      transition: opacity .55s var(--ease-smooth), transform .55s var(--ease-smooth);
+    }
+    body.page-in  { opacity:1; transform:translateY(0); }
+    body.page-out { opacity:0; transform:translateY(10px); }
+
+    /* BLOBS */
+    .blob { position:fixed; border-radius:50%; z-index:-1; filter:blur(28px); opacity:.48; pointer-events:none; }
+    .blob-a { width:280px;height:280px;background:#e89abf;top:-70px;left:-80px; animation:fa 14s ease-in-out infinite; }
+    .blob-b { width:230px;height:230px;background:#a8d8f8;bottom:-60px;right:-60px; animation:fb 17s ease-in-out infinite; }
+    @keyframes fa { 0%,100%{transform:translate(0,0)} 50%{transform:translate(14px,-16px)} }
+    @keyframes fb { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-12px,14px)} }
+
+    /* CURSOR */
+    #cursor-glow {
+      position:fixed; pointer-events:none; z-index:9999;
+      width:280px; height:280px; border-radius:50%;
+      background: radial-gradient(circle, rgba(240,110,180,.16) 0%, transparent 70%);
+      transform:translate(-50%,-50%);
+      mix-blend-mode:multiply;
+    }
+
+    /* NAV */
+    .topbar {
+      position:sticky; top:0; z-index:100;
+      backdrop-filter: blur(12px) saturate(1.4);
+      -webkit-backdrop-filter: blur(12px) saturate(1.4);
+      background: rgba(250,220,240,.78);
+      border-bottom: 1px solid rgba(180,80,130,.13);
+      padding: 10px 0;
+    }
+    .back-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      border-radius:999px; border:1.5px solid rgba(130,50,100,.2);
+      background:rgba(255,255,255,.88);
+      color:#7a2050; font-weight:700; font-size:.9rem;
+      padding:8px 18px; text-decoration:none;
+      transition: transform .3s var(--ease-bounce), box-shadow .3s ease, background .2s;
+    }
+    .back-btn:hover {
+      transform: translateX(-4px) scale(1.04);
+      box-shadow: 0 8px 20px rgba(120,38,79,.18);
+      background:#fff; color:#7a2050;
+    }
+    .badge-tag {
+      border-radius:999px;
+      background: linear-gradient(135deg,#ffc4e4,#ffecf8);
+      color:#7a2050; font-weight:700; font-size:.85rem;
+      border:1.5px solid rgba(120,40,90,.18); padding:6px 16px;
+    }
+
+    /* PAGE TITLE */
+    h1.page-title {
+      font-family: "Baloo 2", cursive;
+      font-size: clamp(42px,9vw,90px);
+      font-weight: 800; line-height:.95;
+      background: linear-gradient(135deg, #8c1a50 0%, #cc4488 45%, #e080b0 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 4px 18px rgba(140,40,90,.2));
+    }
+
+    /* GLASS CARD */
+    .glass-card {
+      border:1.5px solid rgba(255,255,255,.88);
+      border-radius:30px;
+      background:rgba(255,255,255,.72);
+      backdrop-filter:blur(12px) saturate(1.5);
+      -webkit-backdrop-filter:blur(12px) saturate(1.5);
+      box-shadow:0 22px 55px rgba(108,43,84,.2);
+      animation: rise .8s var(--ease-bounce) .1s both;
+    }
+    @keyframes rise {
+      from { opacity:0; transform:translateY(24px) scale(.97); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    /* CONTACT ITEM */
+    .contact-item {
+      display:flex; align-items:flex-start; gap:14px;
+      padding:16px 20px; border-radius:18px;
+      border:1.5px solid rgba(200,100,150,.12);
+      background:linear-gradient(135deg, rgba(255,240,248,.95), rgba(240,255,252,.9));
+      transition: transform .35s var(--ease-bounce), box-shadow .3s ease;
+      position:relative; overflow:hidden;
+    }
+    .contact-item::before {
+      content:'';
+      position:absolute; top:0; left:-100%; width:60%; height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+      transition: left .5s ease;
+    }
+    .contact-item:hover::before { left:150%; }
+    .contact-item:hover {
+      transform: translateX(6px) scale(1.01);
+      box-shadow: 0 14px 32px rgba(108,40,80,.18);
+    }
+
+    .contact-icon {
+      width:48px; height:48px; border-radius:50%;
+      background:linear-gradient(135deg, #ffc4e4, #ffe8f5);
+      display:grid; place-items:center; font-size:1.3rem;
+      border:1.5px solid rgba(139,45,95,.2);
+      box-shadow:0 4px 12px rgba(139,45,95,.15); flex-shrink:0;
+      transition: transform .35s var(--ease-bounce);
+    }
+    .contact-item:hover .contact-icon { transform: rotate(-10deg) scale(1.15); }
+
+    /* SHOP PHOTO */
+    .shop-photo-wrap {
+      position:relative; border-radius:24px; overflow:hidden;
+      border:2px solid rgba(255,255,255,.9);
+      box-shadow:0 20px 50px rgba(108,40,80,.22);
+    }
+    .shop-photo-wrap::after {
+      content:'';
+      position:absolute; inset:0;
+      background:linear-gradient(to bottom, transparent 60%, rgba(100,30,60,.18));
+      pointer-events:none;
+    }
+    .shop-photo {
+      width:100%; max-height:280px; object-fit:cover; display:block;
+      transition: transform .6s var(--ease-smooth);
+    }
+    .shop-photo-wrap:hover .shop-photo { transform: scale(1.05); }
+
+    /* OPEN BADGE */
+    .open-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      background:linear-gradient(135deg, #ff6dba, #ff9ecf);
+      color:#fff; font-weight:800; font-size:.9rem;
+      border-radius:999px; padding:8px 18px;
+      box-shadow:0 6px 20px rgba(232,96,154,.38);
+      animation: badge-pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes badge-pulse {
+      0%,100%{box-shadow:0 6px 20px rgba(232,96,154,.38)}
+      50%{box-shadow:0 8px 30px rgba(232,96,154,.62)}
+    }
+    .open-badge .dot {
+      width:9px;height:9px;border-radius:50%;
+      background:#fff;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+    /* REVEAL */
+    .reveal {
+      opacity:0; transform:translateY(22px);
+      transition: opacity .55s ease, transform .55s var(--ease-smooth);
+    }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    @media (max-width:767px){ .glass-card{ border-radius:20px; } }
+  </style>
+</head>
+<body>
+  <div id="cursor-glow"></div>
+  <div class="blob blob-a"></div>
+  <div class="blob blob-b"></div>
+
+  <nav class="topbar">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a href="index.html" class="back-btn"><i class="bi bi-arrow-left"></i> Trang chủ</a>
+      <span class="badge-tag"><i class="bi bi-geo-alt-fill me-1"></i>Liên hệ</span>
+    </div>
+  </nav>
+
+  <div class="container py-4 py-md-5" style="position:relative;z-index:1;">
+
+    <!-- TITLE -->
+    <div class="reveal text-center mb-5">
+      <h1 class="page-title">Liên hệ chúng mình <i class="bi bi-envelope-heart-fill" style="font-size:.8em;"></i></h1>
+      <div class="mt-3">
+        <span class="open-badge"><span class="dot"></span>Đang mở cửa</span>
+      </div>
+    </div>
+
+    <div class="glass-card p-3 p-md-4 mx-auto reveal" style="max-width:900px;">
+      <div class="row g-4 align-items-center">
+
+        <!-- CONTACT INFO -->
+        <div class="col-12 col-md-6">
+          <div class="d-grid gap-3">
+
+            <div class="contact-item">
+              <div class="contact-icon"><i class="bi bi-geo-alt-fill"></i></div>
+              <div>
+                <div class="fw-bold mb-1">Địa chỉ</div>
+                <div>Thôn 1, xã La Tơi, Tỉnh Quảng Ngãi</div>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon"><i class="bi bi-telephone-fill"></i></div>
+              <div>
+                <div class="fw-bold mb-1">Điện thoại</div>
+                <div>038*****77</div>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon"><i class="bi bi-clock-fill"></i></div>
+              <div>
+                <div class="fw-bold mb-1">Giờ mở cửa</div>
+                <div>08:00 – 22:00 mỗi ngày</div>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon"><i class="bi bi-envelope-heart-fill"></i></div>
+              <div>
+                <div class="fw-bold mb-1">Email</div>
+                <div>sweetyice@example.com</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- PHOTO -->
+        <div class="col-12 col-md-6">
+          <div class="shop-photo-wrap">
+            <img class="shop-photo"
+              src="https://images.unsplash.com/photo-1551024709-8f23befc6cf7?auto=format&fit=crop&w=1200&q=80"
+              alt="Không gian quán kem Sweety Ice" />
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    requestAnimationFrame(() => { document.body.classList.add('page-in'); });
+
+    const glow = document.getElementById('cursor-glow');
+    document.addEventListener('mousemove', e => {
+      glow.style.left = e.clientX + 'px';
+      glow.style.top  = e.clientY + 'px';
+    });
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add('visible'); io.unobserve(en.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach((el,i) => {
+      el.style.transitionDelay = (i*0.08)+'s';
+      io.observe(el);
+    });
+
+    document.querySelectorAll('a[href]').forEach(link => {
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+      link.addEventListener('click', e => {
+        if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        document.body.classList.remove('page-in');
+        document.body.classList.add('page-out');
+        setTimeout(() => { window.location.href = href; }, 320);
+      });
+    });
+  </script>
+</body>
+</html>

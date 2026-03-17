@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tiệm Kem Sweety Ice – Trang Chủ</title>
+  <meta name="description" content="Sweety Ice House – kem tươi ngọt mỗi ngày, vị kem truyền thống và sáng tạo tại Quảng Ngãi." />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── TOKENS ─────────────────────────────── */
+    :root {
+      --p1: #ffe6f4;
+      --p2: #ffcfe8;
+      --p3: #ff9bd2;
+      --p4: #e8609a;
+      --berry: #7b2054;
+      --ink: #3d1530;
+      --mint: #c8fde5;
+      --glass: rgba(255,255,255,0.72);
+      --glass-border: rgba(255,255,255,0.9);
+      --shadow-soft: 0 30px 70px rgba(120,30,80,0.18);
+      --ease-bounce: cubic-bezier(.34,1.56,.64,1);
+      --ease-smooth: cubic-bezier(.25,.8,.25,1);
+    }
+
+    /* ── RESET ───────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── BODY / PAGE TRANSITIONS ─────────────── */
+    body {
+      font-family: "Quicksand", sans-serif;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse 60% 40% at 8% 5%, rgba(255,140,200,0.75), transparent),
+        radial-gradient(ellipse 55% 45% at 92% 10%, rgba(200,253,230,0.7), transparent),
+        radial-gradient(ellipse 50% 50% at 55% 92%, rgba(255,200,232,0.75), transparent),
+        linear-gradient(145deg, #ffedf7 0%, #ffd5eb 50%, #e8fff6 100%);
+      overflow-x: hidden;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity .55s var(--ease-smooth), transform .55s var(--ease-smooth);
+    }
+    body.page-in  { opacity: 1; transform: translateY(0); }
+    body.page-out { opacity: 0; transform: translateY(10px); }
+
+    /* ── CURSOR GLOW ─────────────────────────── */
+    #cursor-glow {
+      position: fixed; pointer-events: none; z-index: 9999;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,150,210,0.18) 0%, transparent 70%);
+      transform: translate(-50%,-50%);
+      transition: transform .08s linear;
+      mix-blend-mode: multiply;
+    }
+
+    /* ── FLOATING BLOBS ──────────────────────── */
+    .blob {
+      position: fixed; border-radius: 50%; z-index: -1;
+      filter: blur(28px); opacity: .5;
+    }
+    .blob-a { width:320px;height:320px;background:#ffaad6;top:-80px;left:-90px; animation: float-a 14s ease-in-out infinite; }
+    .blob-b { width:280px;height:280px;background:#b5fcdf;bottom:-80px;right:-80px; animation: float-b 16s ease-in-out infinite; }
+    .blob-c { width:200px;height:200px;background:#c8d4ff;top:40%;left:60%; animation: float-c 18s ease-in-out infinite; opacity:.35; }
+
+    @keyframes float-a { 0%,100%{transform:translate(0,0) scale(1)}  50%{transform:translate(18px,-22px) scale(1.05)} }
+    @keyframes float-b { 0%,100%{transform:translate(0,0) scale(1)}  50%{transform:translate(-15px,20px) scale(1.08)} }
+    @keyframes float-c { 0%,100%{transform:translate(0,0)}            50%{transform:translate(-30px,25px)} }
+
+    /* ── CONFETTI PARTICLES ──────────────────── */
+    .confetti-wrap {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .dot {
+      position: absolute; border-radius: 50%; opacity: 0;
+      animation: rain linear infinite;
+    }
+    @keyframes rain {
+      0%   { transform: translateY(-20px) rotate(0deg); opacity: .7; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ── SHELL / CARD ────────────────────────── */
+    .shell {
+      width: min(100%, 1000px);
+      border: 1px solid var(--glass-border);
+      background: var(--glass);
+      backdrop-filter: blur(14px) saturate(1.6);
+      -webkit-backdrop-filter: blur(14px) saturate(1.6);
+      border-radius: 36px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      animation: rise .8s var(--ease-bounce) both;
+    }
+    @keyframes rise {
+      from { opacity:0; transform:translateY(28px) scale(.97); }
+      to   { opacity:1; transform:translateY(0)    scale(1);   }
+    }
+
+    /* ── HERO ────────────────────────────────── */
+    .hero {
+      padding: 32px 32px 28px;
+      background:
+        linear-gradient(140deg, rgba(255,255,255,.55), rgba(255,255,255,.08)),
+        linear-gradient(125deg, #ffc5e8 0%, #fff0fa 45%, #d0fff0 100%);
+      border-bottom: 1px solid rgba(120,38,79,.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        135deg,
+        rgba(255,255,255,.15) 0px, rgba(255,255,255,.15) 1px,
+        transparent 1px, transparent 40px
+      );
+      pointer-events: none;
+    }
+
+    /* ── TAG / BADGE ─────────────────────────── */
+    .tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(120,38,79,.22);
+      background: rgba(255,255,255,.78);
+      color: var(--berry);
+      padding: 8px 16px;
+      font-weight: 700; font-size: .88rem;
+      box-shadow: 0 4px 14px rgba(120,38,79,.12);
+      backdrop-filter: blur(6px);
+    }
+    .tag .bi-stars { animation: spin-star 3s linear infinite; }
+    @keyframes spin-star { 0%,100%{transform:rotate(0deg) scale(1)} 50%{transform:rotate(180deg) scale(1.2)} }
+
+    /* ── BRAND ───────────────────────────────── */
+    .brand {
+      font-family: "Pacifico", cursive;
+      font-size: clamp(60px,13vw,140px);
+      line-height: 1.05;
+      padding-bottom: 0.15em;
+      background: linear-gradient(135deg, #a0246c 0%, #d4549a 40%, #e8709f 70%, #ff9ecf 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 8px 24px rgba(140,40,90,.22));
+      animation: brand-in .9s var(--ease-bounce) .1s both;
+    }
+    @keyframes brand-in {
+      from { opacity:0; transform:translateY(20px) scale(.94); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    .slogan {
+      font-size: clamp(1rem,2.2vw,1.28rem);
+      font-weight: 700; color: #5e2548;
+      line-height: 1.5;
+    }
+
+    /* ── HERO IMAGE FRAME ────────────────────── */
+    .hero-frame {
+      position: relative; border-radius: 26px; overflow: hidden;
+      border: 2px solid rgba(255,255,255,.9);
+      box-shadow: 0 20px 50px rgba(111,30,78,.24), 0 0 0 6px rgba(255,255,255,.3);
+      min-height: 300px;
+    }
+    .hero-frame::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, rgba(120,30,70,.18));
+      pointer-events: none;
+    }
+    .hero-img {
+      width: 100%; height: 100%; min-height: 300px;
+      object-fit: cover;
+      transition: transform .6s var(--ease-smooth);
+    }
+    .hero-frame:hover .hero-img { transform: scale(1.04); }
+
+    /* ── STICKERS ────────────────────────────── */
+    .sticker {
+      position: absolute; z-index: 3;
+      font-family: "Lilita One", sans-serif;
+      color: #8c2a60;
+      background: rgba(255,255,255,.94);
+      border-radius: 999px;
+      padding: 7px 14px;
+      border: 1.5px solid rgba(140,42,96,.18);
+      box-shadow: 0 8px 22px rgba(120,35,83,.18);
+      font-size: .88rem;
+      animation: sticker-float 4s ease-in-out infinite;
+    }
+    .sticker.top    { top:14px; left:14px; transform:rotate(-6deg); }
+    .sticker.bottom { right:14px; bottom:14px; transform:rotate(6deg); animation-delay: -2s; }
+    @keyframes sticker-float {
+      0%,100%{transform:rotate(-6deg) translateY(0)}
+      50%{transform:rotate(-5deg) translateY(-5px)}
+    }
+    .sticker.bottom { animation-name: sticker-float-r; }
+    @keyframes sticker-float-r {
+      0%,100%{transform:rotate(6deg) translateY(0)}
+      50%{transform:rotate(5deg) translateY(-5px)}
+    }
+
+    /* ── MENU AREA ───────────────────────────── */
+    .menu-area { padding: 28px 32px 36px; }
+
+    .menu-title {
+      font-family: "Lilita One", sans-serif;
+      font-size: clamp(1.5rem,3.5vw,2.1rem);
+      color: #7b2d58;
+      letter-spacing: .02em;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+    }
+    .menu-title::after {
+      content: '';
+      display: block;
+      width: 50%;
+      height: 3px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff6dba, transparent);
+      margin-top: 4px;
+    }
+
+    /* ── MENU CARDS ──────────────────────────── */
+    .menu-card {
+      position: relative;
+      border-radius: 24px;
+      border: 1.5px solid rgba(126,47,100,.14);
+      background: linear-gradient(160deg, rgba(255,255,255,.97), rgba(255,240,250,.92));
+      color: var(--ink);
+      font-weight: 700;
+      text-align: left;
+      padding: 20px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      text-decoration: none;
+      overflow: hidden;
+      transition:
+        transform .35s var(--ease-bounce),
+        box-shadow .35s ease,
+        border-color .25s ease;
+      cursor: pointer;
+    }
+    .menu-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,170,220,.22), rgba(180,255,225,.15));
+      opacity: 0;
+      transition: opacity .3s ease;
+      pointer-events: none;
+    }
+    .menu-card:hover::before { opacity: 1; }
+    .menu-card:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 18px 40px rgba(126,47,100,.2), 0 0 0 2px rgba(255,130,200,.2);
+      border-color: rgba(200,80,150,.35);
+      color: var(--ink);
+    }
+    .menu-card:active { transform: translateY(-2px) scale(.99); }
+
+    /* Ripple */
+    .menu-card .ripple {
+      position: absolute; border-radius: 50%;
+      background: rgba(255,120,190,.3);
+      transform: scale(0); animation: ripple-out .55s ease-out forwards;
+      pointer-events: none;
+    }
+    @keyframes ripple-out {
+      to { transform: scale(4); opacity: 0; }
+    }
+
+    /* Shimmer line */
+    .menu-card::after {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent);
+      transition: left .55s ease;
+      pointer-events: none;
+    }
+    .menu-card:hover::after { left: 150%; }
+
+    .menu-card small {
+      display: block; font-size: .8rem;
+      color: #8a4f71; font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .icon-wrap {
+      flex-shrink: 0;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: inline-grid; place-items: center;
+      background: linear-gradient(135deg, #ffc4e4, #ffe8f5);
+      color: #8b2d5f;
+      font-size: 1.2rem;
+      border: 1.5px solid rgba(139,45,95,.2);
+      box-shadow: 0 4px 12px rgba(139,45,95,.16);
+      transition: transform .35s var(--ease-bounce), box-shadow .3s ease;
+    }
+    .menu-card:hover .icon-wrap {
+      transform: rotate(-8deg) scale(1.15);
+      box-shadow: 0 8px 20px rgba(139,45,95,.28);
+    }
+
+    .arrow-icon {
+      color: #c8709e; font-size: 1.1rem;
+      transition: transform .3s var(--ease-bounce);
+    }
+    .menu-card:hover .arrow-icon { transform: translateX(5px); }
+
+    /* ── BOTTOM STRIP ────────────────────────── */
+    .bottom-strip {
+      margin: 0 32px 32px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255,180,220,.45), rgba(180,255,225,.35));
+      border: 1.5px solid rgba(255,255,255,.8);
+      padding: 14px 20px;
+      display: flex; align-items: center; gap: 12px;
+      font-size: .88rem; font-weight: 700;
+      color: #6a2050;
+      backdrop-filter: blur(6px);
+    }
+    .bottom-strip .pulse-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #e8609a; flex-shrink: 0;
+      box-shadow: 0 0 0 0 rgba(232,96,154,.5);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(232,96,154,.5); }
+      70%  { box-shadow: 0 0 0 10px rgba(232,96,154,0); }
+      100% { box-shadow: 0 0 0 0 rgba(232,96,154,0); }
+    }
+
+    /* ── MEDIA ───────────────────────────────── */
+    @media (max-width: 767px) {
+      .hero { padding: 20px 18px 18px; }
+      .menu-area { padding: 18px 18px 22px; }
+      .shell { border-radius: 24px; }
+      .bottom-strip { margin: 0 18px 22px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Cursor glow -->
+  <div id="cursor-glow"></div>
+
+  <!-- Blobs -->
+  <div class="blob blob-a"></div>
+  <div class="blob blob-b"></div>
+  <div class="blob blob-c"></div>
+
+  <!-- Confetti -->
+  <div class="confetti-wrap" id="confetti"></div>
+
+  <div class="container py-3 py-md-4" style="position:relative;z-index:1;">
+    <div class="shell mx-auto">
+
+      <!-- HERO -->
+      <section class="hero">
+        <div class="row g-3 g-md-4 align-items-center">
+          <div class="col-12 col-md-6">
+            <span class="tag"><i class="bi bi-stars"></i>TIỆM KEM SWEETY ICE</span>
+            <h1 class="brand mt-3 mb-4">Tiệm Kem<br>Sweety Ice</h1>
+            <p class="slogan mb-0 mt-3">Kem ngọt, giao diện xinh,<br>vào là muốn thử ngay. <i class="bi bi-emoji-smile-fill" style="color:#e8609a;"></i></p>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="hero-frame">
+              <span class="sticker top"><i class="bi bi-cone-striped"></i> Cute Taste</span>
+              <img id="heroImage" class="hero-img"
+                src="https://images.pexels.com/photos/1352278/pexels-photo-1352278.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                alt="Kem nhiều màu" loading="eager" />
+              <span class="sticker bottom"><i class="bi bi-stars"></i> Fresh Daily</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MENU -->
+      <section class="menu-area">
+        <h2 class="menu-title">Khám phá ngay <i class="bi bi-stars" style="font-size:.85em;"></i></h2>
+        <div class="row g-3">
+
+          <div class="col-12 col-md-6">
+            <a class="menu-card" id="btn-khainem" href="khai-niem.html">
+              <div class="d-flex align-items-center gap-3 flex-grow-1">
+                <span class="icon-wrap"><i class="bi bi-bookmark-heart-fill"></i></span>
+                <div>
+                  Khái niệm về kem
+                  <small>Đọc nhanh về lịch sử và thành phần</small>
+                </div>
+              </div>
+              <i class="bi bi-chevron-right arrow-icon"></i>
+            </a>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <a class="menu-card" id="btn-truyen" href="vi-truyen-thong.html">
+              <div class="d-flex align-items-center gap-3 flex-grow-1">
+                <span class="icon-wrap"><i class="bi bi-cup-hot-fill"></i></span>
+                <div>
+                  Vị kem truyền thống
+                  <small>Socola, vani, dâu và những vị quen thuộc</small>
+                </div>
+              </div>
+              <i class="bi bi-chevron-right arrow-icon"></i>
+            </a>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <a class="menu-card" id="btn-moi" href="vi-moi.html">
+              <div class="d-flex align-items-center gap-3 flex-grow-1">
+                <span class="icon-wrap"><i class="bi bi-stars"></i></span>
+                <div>
+                  Vị kem mới
+                  <small>Vị sáng tạo dành cho team thích trải nghiệm</small>
+                </div>
+              </div>
+              <i class="bi bi-chevron-right arrow-icon"></i>
+            </a>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <a class="menu-card" id="btn-lienhe" href="lien-he.html">
+              <div class="d-flex align-items-center gap-3 flex-grow-1">
+                <span class="icon-wrap"><i class="bi bi-telephone-fill"></i></span>
+                <div>
+                  Liên hệ
+                  <small>Địa chỉ, số điện thoại và giờ mở cửa</small>
+                </div>
+              </div>
+              <i class="bi bi-chevron-right arrow-icon"></i>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- BOTTOM STRIP -->
+      <div class="bottom-strip">
+        <div class="pulse-dot"></div>
+        <span><i class="bi bi-clock-fill me-1"></i> Mở cửa 08:00 – 22:00 mỗi ngày &nbsp;·&nbsp; Thôn 1, xã La Tơi, Quảng Ngãi</span>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* ── PAGE IN ──────────────────────────────── */
+    requestAnimationFrame(() => { document.body.classList.add('page-in'); });
+
+    /* ── CURSOR GLOW ──────────────────────────── */
+    const glow = document.getElementById('cursor-glow');
+    document.addEventListener('mousemove', e => {
+      glow.style.left = e.clientX + 'px';
+      glow.style.top  = e.clientY + 'px';
+    });
+
+    /* ── CONFETTI PARTICLES ───────────────────── */
+    const wrap = document.getElementById('confetti');
+    const colors = ['#ff9bd2','#ffcfe8','#b5fcdf','#ffc867','#c8d4ff','#ffe680'];
+    for (let i = 0; i < 28; i++) {
+      const d = document.createElement('div');
+      const size = 5 + Math.random() * 8;
+      d.className = 'dot';
+      Object.assign(d.style, {
+        width: size+'px', height: size+'px',
+        background: colors[Math.floor(Math.random()*colors.length)],
+        left: (Math.random()*100)+'%',
+        top: (Math.random()*100)+'%',
+        animationDuration: (8 + Math.random()*12)+'s',
+        animationDelay: (Math.random()*12)+'s',
+      });
+      wrap.appendChild(d);
+    }
+
+    /* ── RIPPLE ON CARDS ──────────────────────── */
+    document.querySelectorAll('.menu-card').forEach(card => {
+      card.addEventListener('click', function (e) {
+        const r = document.createElement('span');
+        r.className = 'ripple';
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        Object.assign(r.style, {
+          width: size+'px', height: size+'px',
+          left: (e.clientX - rect.left - size/2)+'px',
+          top:  (e.clientY - rect.top  - size/2)+'px',
+        });
+        this.appendChild(r);
+        setTimeout(() => r.remove(), 600);
+      });
+    });
+
+    /* ── PAGE TRANSITION ──────────────────────── */
+    document.querySelectorAll('a[href]').forEach(link => {
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+      link.addEventListener('click', e => {
+        if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        document.body.classList.remove('page-in');
+        document.body.classList.add('page-out');
+        setTimeout(() => { window.location.href = href; }, 320);
+      });
+    });
+
+    /* ── HERO IMAGE FALLBACK ──────────────────── */
+    const heroImage = document.getElementById('heroImage');
+    heroImage.addEventListener('error', () => {
+      heroImage.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%23ffd2ea'/><stop offset='100%25' stop-color='%23cffff0'/></linearGradient></defs><rect width='1200' height='800' fill='url(%23g)'/><text x='600' y='400' text-anchor='middle' font-size='96' font-family='Verdana' fill='%2370264f'>Sweety Ice</text></svg>`;
+    }, { once: true });
+  </script>
+</body>
+</html>

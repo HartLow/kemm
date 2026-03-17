@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vị Mới – Sweety Ice</title>
+  <meta name="description" content="Các vị kem mới sáng tạo tại Sweety Ice: matcha phô mai, sữa chua việt quất, than tre dừa non và nhiều hơn nữa." />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ease-bounce: cubic-bezier(.34,1.56,.64,1);
+      --ease-smooth: cubic-bezier(.25,.8,.25,1);
+    }
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+    body {
+      font-family: "Quicksand", sans-serif;
+      min-height: 100vh; color: #502542;
+      background:
+        radial-gradient(ellipse 65% 45% at 8% 8%, rgba(255,170,215,.75), transparent),
+        radial-gradient(ellipse 55% 45% at 92% 90%, rgba(180,255,225,.7), transparent),
+        radial-gradient(ellipse 45% 35% at 55% 50%, rgba(210,190,255,.45), transparent),
+        linear-gradient(145deg, #fceaf5 0%, #f0d4ea 50%, #eafff7 100%);
+      overflow-x:hidden;
+      opacity:0; transform:translateY(14px);
+      transition: opacity .55s var(--ease-smooth), transform .55s var(--ease-smooth);
+    }
+    body.page-in  { opacity:1; transform:translateY(0); }
+    body.page-out { opacity:0; transform:translateY(10px); }
+
+    /* BLOBS */
+    .blob { position:fixed; border-radius:50%; z-index:-1; filter:blur(28px); opacity:.48; pointer-events:none; }
+    .blob-a { width:280px;height:280px;background:#ffaad6;top:-70px;left:-80px; animation:fa 14s ease-in-out infinite; }
+    .blob-b { width:230px;height:230px;background:#b5fcdf;bottom:-60px;right:-60px; animation:fb 17s ease-in-out infinite; }
+    .blob-c { width:180px;height:180px;background:#c4b8ff;top:42%;left:58%; animation:fc 19s ease-in-out infinite; opacity:.35; }
+    @keyframes fa { 0%,100%{transform:translate(0,0)} 50%{transform:translate(16px,-18px)} }
+    @keyframes fb { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-12px,15px)} }
+    @keyframes fc { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-24px,20px)} }
+
+    /* CURSOR */
+    #cursor-glow {
+      position:fixed; pointer-events:none; z-index:9999;
+      width:280px; height:280px; border-radius:50%;
+      background: radial-gradient(circle, rgba(200,100,255,.13) 0%, transparent 70%);
+      transform:translate(-50%,-50%);
+      mix-blend-mode:multiply;
+    }
+
+    /* NAV */
+    .topbar {
+      position:sticky; top:0; z-index:100;
+      backdrop-filter:blur(12px) saturate(1.4);
+      -webkit-backdrop-filter:blur(12px) saturate(1.4);
+      background:rgba(245,225,245,.78);
+      border-bottom:1px solid rgba(180,80,150,.13);
+      padding:10px 0;
+    }
+    .back-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      border-radius:999px; border:1.5px solid rgba(130,50,100,.2);
+      background:rgba(255,255,255,.88); color:#7a2050;
+      font-weight:700; font-size:.9rem; padding:8px 18px; text-decoration:none;
+      transition: transform .3s var(--ease-bounce), box-shadow .3s ease, background .2s;
+    }
+    .back-btn:hover {
+      transform:translateX(-4px) scale(1.04);
+      box-shadow:0 8px 20px rgba(120,38,79,.18);
+      background:#fff; color:#7a2050;
+    }
+    .badge-tag {
+      border-radius:999px;
+      background:linear-gradient(135deg, #c8b4ff, #f0e8ff);
+      color:#5a2088; font-weight:700; font-size:.85rem;
+      border:1.5px solid rgba(100,40,160,.18); padding:6px 16px;
+    }
+
+    /* TITLE */
+    h1.page-title {
+      font-family: "Pacifico", cursive;
+      font-size: clamp(44px,9vw,86px);
+      background: linear-gradient(135deg, #7a22b4 0%, #c450a2 40%, #e87aaa 70%, #ff9ecf 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+      filter:drop-shadow(0 4px 18px rgba(120,40,160,.2));
+      animation: title-in .8s var(--ease-bounce) .1s both;
+    }
+    @keyframes title-in {
+      from{opacity:0;transform:translateY(20px) scale(.94)}
+      to{opacity:1;transform:translateY(0) scale(1)}
+    }
+
+    /* FEATURE CARD */
+    .feature-card {
+      border-radius:28px;
+      border:1.5px solid rgba(255,255,255,.88);
+      background:rgba(255,255,255,.72);
+      backdrop-filter:blur(12px) saturate(1.5);
+      -webkit-backdrop-filter:blur(12px) saturate(1.5);
+      box-shadow:0 22px 55px rgba(100,40,80,.18);
+      overflow:hidden;
+      animation: rise .8s var(--ease-bounce) .1s both;
+    }
+    @keyframes rise {
+      from{opacity:0;transform:translateY(24px) scale(.97)}
+      to{opacity:1;transform:translateY(0) scale(1)}
+    }
+
+    /* FEATURED IMAGE */
+    .feat-img-wrap {
+      position:relative; border-radius:22px; overflow:hidden;
+      border:2px solid rgba(255,255,255,.9);
+      box-shadow:0 14px 36px rgba(100,38,78,.22);
+    }
+    .feat-img-wrap::after {
+      content:'';
+      position:absolute; inset:0;
+      background:linear-gradient(to bottom, transparent 55%, rgba(80,28,60,.2));
+      pointer-events:none;
+    }
+    .feat-img {
+      width:100%; max-height:320px; object-fit:cover; display:block;
+      transition:transform .6s var(--ease-smooth);
+    }
+    .feat-img-wrap:hover .feat-img { transform:scale(1.05); }
+
+    /* FLAVOR PILLS */
+    .flavor-pill {
+      display:flex; align-items:center; gap:12px;
+      padding:14px 18px; border-radius:999px;
+      border:1.5px solid rgba(160,80,200,.15);
+      background:linear-gradient(135deg, rgba(255,255,255,.95), rgba(248,240,255,.9));
+      font-weight:700; font-size:.95rem;
+      cursor:default;
+      position:relative; overflow:hidden;
+      transition:
+        transform .35s var(--ease-bounce),
+        box-shadow .3s ease,
+        border-color .25s ease;
+    }
+    .flavor-pill::before {
+      content:'';
+      position:absolute; top:0; left:-100%; width:60%; height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.6), transparent);
+      transition:left .5s ease;
+    }
+    .flavor-pill:hover::before { left:150%; }
+    .flavor-pill:hover {
+      transform:translateX(8px) scale(1.02);
+      box-shadow:0 12px 28px rgba(120,50,180,.2);
+      border-color:rgba(180,80,220,.3);
+    }
+    .flavor-pill .pill-icon {
+      width:38px; height:38px; border-radius:50%;
+      background:linear-gradient(135deg, #e0c4ff, #f5e8ff);
+      display:grid; place-items:center; font-size:1.1rem; flex-shrink:0;
+      border:1.5px solid rgba(140,60,200,.2);
+      transition:transform .35s var(--ease-bounce);
+    }
+    .flavor-pill:hover .pill-icon { transform:rotate(-10deg) scale(1.15); }
+
+    /* NEW BADGE */
+    .new-badge {
+      display:inline-block;
+      background:linear-gradient(135deg,#ff6dba,#a855f7);
+      color:#fff; font-weight:800; font-size:.72rem;
+      border-radius:999px; padding:2px 10px;
+      margin-left:auto;
+      animation:badge-shine 3s ease-in-out infinite;
+    }
+    @keyframes badge-shine {
+      0%,100%{opacity:1} 50%{opacity:.7}
+    }
+
+    /* REVEAL */
+    .reveal {
+      opacity:0; transform:translateY(22px);
+      transition: opacity .55s ease, transform .55s var(--ease-smooth);
+    }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    @media(max-width:767px){ .feature-card{ border-radius:20px; } }
+  </style>
+</head>
+<body>
+  <div id="cursor-glow"></div>
+  <div class="blob blob-a"></div>
+  <div class="blob blob-b"></div>
+  <div class="blob blob-c"></div>
+
+  <nav class="topbar">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a href="index.html" class="back-btn"><i class="bi bi-arrow-left"></i> Trang chủ</a>
+      <span class="badge-tag"><i class="bi bi-stars me-1"></i>Vị mới</span>
+    </div>
+  </nav>
+
+  <div class="container py-4 py-md-5" style="position:relative;z-index:1;">
+
+    <!-- TITLE -->
+    <div class="reveal text-center mb-4">
+      <h1 class="page-title">Vị kem mới <i class="bi bi-stars" style="font-size:.8em;"></i></h1>
+      <p class="mt-3 fw-bold fs-5" style="color:#7a3080;">Những hương vị sáng tạo chỉ có tại Sweety Ice</p>
+    </div>
+
+    <!-- FEATURE CARD -->
+    <div class="feature-card p-3 p-md-4 reveal">
+      <div class="row g-4 align-items-center">
+
+        <!-- IMAGE -->
+        <div class="col-12 col-md-6">
+          <div class="feat-img-wrap">
+            <img class="feat-img"
+              src="https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&w=1200&q=80"
+              alt="Tủ kem với nhiều hương vị sáng tạo" />
+          </div>
+        </div>
+
+        <!-- FLAVORS -->
+        <div class="col-12 col-md-6">
+          <p class="fw-bold fs-5 mb-4" style="color:#802060;">
+            Những món mới tại Sweety Ice – vị lạ mà vẫn dễ ăn, cực kỳ instagram-worthy! <i class="bi bi-palette-fill" style="color:#c060d0;"></i>
+          </p>
+          <div class="d-flex flex-column gap-2">
+
+            <div class="flavor-pill">
+              <div class="pill-icon"><i class="bi bi-leaf-fill"></i></div>
+              <span>Kem matcha phô mai</span>
+              <span class="new-badge">HOT</span>
+            </div>
+
+            <div class="flavor-pill">
+              <div class="pill-icon"><i class="bi bi-gem"></i></div>
+              <span>Kem sữa chua việt quất</span>
+              <span class="new-badge">NEW</span>
+            </div>
+
+            <div class="flavor-pill">
+              <div class="pill-icon"><i class="bi bi-moon-stars-fill"></i></div>
+              <span>Kem than tre dừa non</span>
+              <span class="new-badge">HOT</span>
+            </div>
+
+            <div class="flavor-pill">
+              <div class="pill-icon"><i class="bi bi-brightness-high-fill"></i></div>
+              <span>Kem xoài chanh dây</span>
+              <span class="new-badge">NEW</span>
+            </div>
+
+            <div class="flavor-pill">
+              <div class="pill-icon"><i class="bi bi-cup-straw"></i></div>
+              <span>Combo kem kèm đồ uống</span>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    requestAnimationFrame(() => { document.body.classList.add('page-in'); });
+
+    const glow = document.getElementById('cursor-glow');
+    document.addEventListener('mousemove', e => {
+      glow.style.left = e.clientX + 'px';
+      glow.style.top  = e.clientY + 'px';
+    });
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add('visible'); io.unobserve(en.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach((el,i) => {
+      el.style.transitionDelay = (i*0.1)+'s';
+      io.observe(el);
+    });
+
+    document.querySelectorAll('a[href]').forEach(link => {
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+      link.addEventListener('click', e => {
+        if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        document.body.classList.remove('page-in');
+        document.body.classList.add('page-out');
+        setTimeout(() => { window.location.href = href; }, 320);
+      });
+    });
+  </script>
+</body>
+</html>
